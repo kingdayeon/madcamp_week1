@@ -1,36 +1,261 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:orientation="horizontal"-->
+<!--    android:padding="16dp"-->
+<!--    android:background="@android:color/transparent">-->
+
+<!--    &lt;!&ndash; 프로필 이미지와 배경 원 &ndash;&gt;-->
+<!--    <FrameLayout-->
+<!--        android:layout_width="64dp"-->
+<!--        android:layout_height="64dp">-->
+
+<!--        &lt;!&ndash; 배경 원 &ndash;&gt;-->
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@drawable/circle_background" />-->
+
+<!--        &lt;!&ndash; 프로필 이미지 &ndash;&gt;-->
+<!--        <ImageView-->
+<!--            android:id="@+id/image_profile"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:scaleType="centerCrop" />-->
+<!--    </FrameLayout>-->
+
+<!--    &lt;!&ndash; 텍스트 영역 &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_marginStart="16dp">-->
+
+<!--        &lt;!&ndash; 이름 &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/text_name"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="18sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:fontFamily="@font/pretendard_semibold"-->
+<!--        android:textColor="#22172A" />-->
+
+<!--        &lt;!&ndash; 학교, 나이 &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/text_school_age"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:textSize="14sp"-->
+<!--        android:fontFamily="@font/pretendard_medium"-->
+<!--        android:textColor="#22172A" />-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; 뱃지 &ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:id="@+id/text_badge"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:paddingHorizontal="8dp"-->
+<!--        android:paddingVertical="4dp"-->
+<!--        android:background="@drawable/badge_background"-->
+<!--        android:textSize="12sp"-->
+<!--    android:fontFamily="@font/pretendard_bold"-->
+<!--    android:textColor="@android:color/white" />-->
+<!--</LinearLayout>-->
+
+<!--&lt;!&ndash;<?xml version="1.0" encoding="utf-8"?>&ndash;&gt;-->
+<!--<LinearLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:orientation="horizontal"-->
+<!--    android:padding="16dp">-->
+
+<!--    &lt;!&ndash; 프로필 이미지와 배경 원 &ndash;&gt;-->
+<!--    <FrameLayout-->
+<!--        android:layout_width="64dp"-->
+<!--        android:layout_height="64dp">-->
+
+<!--        &lt;!&ndash; 배경 원 &ndash;&gt;-->
+<!--        <View-->
+<!--            android:id="@+id/image_background"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@drawable/circle_background" />-->
+
+<!--        &lt;!&ndash; 프로필 이미지 &ndash;&gt;-->
+<!--        <ImageView-->
+<!--            android:id="@+id/image_profile"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:scaleType="centerCrop" />-->
+<!--    </FrameLayout>-->
+
+<!--    &lt;!&ndash; 텍스트 영역 &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_marginStart="16dp">-->
+
+<!--        &lt;!&ndash; 이름 &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/text_name"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:fontFamily="@font/pretendard_semibold"-->
+<!--            android:textColor="#22172A" />-->
+
+<!--        &lt;!&ndash; 학교, 나이 &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/text_school_age"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:textSize="14sp"-->
+<!--            android:fontFamily="@font/pretendard_medium"-->
+<!--            android:textColor="#22172A" />-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; 뱃지 &ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:id="@+id/text_badge"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:paddingHorizontal="8dp"-->
+<!--        android:paddingVertical="4dp"-->
+<!--        android:background="@drawable/badge_background"-->
+<!--        android:textSize="12sp"-->
+<!--        android:fontFamily="@font/pretendard_bold"-->
+<!--        android:textColor="@android:color/white" />-->
+<!--</LinearLayout>-->
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:orientation="horizontal"-->
+<!--    android:padding="16dp">-->
+
+<!--    &lt;!&ndash; 프로필 이미지와 배경 원 &ndash;&gt;-->
+<!--    <FrameLayout-->
+<!--        android:layout_width="64dp"-->
+<!--        android:layout_height="64dp">-->
+
+<!--        &lt;!&ndash; 배경 원 &ndash;&gt;-->
+<!--        <View-->
+<!--            android:id="@+id/image_background"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@drawable/circle_background" />-->
+
+<!--        &lt;!&ndash; 프로필 이미지 &ndash;&gt;-->
+<!--        <ImageView-->
+<!--            android:id="@+id/image_profile"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:scaleType="centerCrop" />-->
+<!--    </FrameLayout>-->
+
+<!--    &lt;!&ndash; 텍스트와 뱃지 컨테이너 &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_marginStart="16dp">-->
+
+<!--        &lt;!&ndash; 이름 &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/text_name"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:fontFamily="@font/pretendard_semibold"-->
+<!--            android:textColor="#22172A" />-->
+
+<!--        &lt;!&ndash; 뱃지와 학교/나이를 담는 가로 레이아웃 &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_marginTop="4dp">-->
+
+<!--            &lt;!&ndash; 뱃지 &ndash;&gt;-->
+<!--            <TextView-->
+<!--                android:id="@+id/text_badge"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingHorizontal="8dp"-->
+<!--                android:paddingVertical="4dp"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:gravity="center"-->
+<!--                android:background="@drawable/badge_background"-->
+<!--                android:textSize="12sp"-->
+<!--                android:fontFamily="@font/pretendard_bold"-->
+<!--                android:textColor="@android:color/white" />-->
+
+<!--            &lt;!&ndash; 학교, 나이 &ndash;&gt;-->
+<!--            <TextView-->
+<!--                android:id="@+id/text_school_age"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="14sp"-->
+<!--                android:fontFamily="@font/pretendard_medium"-->
+<!--                android:textColor="#22172A" />-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+<!--</LinearLayout>-->
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp"
-    android:background="@android:color/transparent">
+    android:padding="10dp"
+    android:layout_marginBottom="12dp">
 
     <!-- 프로필 이미지와 배경 원 -->
     <FrameLayout
-        android:layout_width="64dp"
-        android:layout_height="64dp">
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginEnd="10dp">
 
         <!-- 배경 원 -->
         <View
+            android:id="@+id/image_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/circle_background" />
+            android:background="@drawable/circle_background"/>
 
         <!-- 프로필 이미지 -->
         <ImageView
             android:id="@+id/image_profile"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_gravity="center"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"/>
     </FrameLayout>
 
-    <!-- 텍스트 영역 -->
+    <!-- 텍스트와 뱃지 컨테이너 -->
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
         android:layout_marginStart="16dp">
@@ -40,32 +265,41 @@
             android:id="@+id/text_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/pretendard_semibold"
-        android:textColor="#22172A" />
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semibold"
+            android:layout_marginTop="8dp"
+            android:textColor="#22172A"/>
 
-        <!-- 학교, 나이 -->
-        <TextView
-            android:id="@+id/text_school_age"
+        <!-- 뱃지와 학교/나이를 담는 가로 레이아웃 -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp"
-        android:fontFamily="@font/pretendard_medium"
-        android:textColor="#22172A" />
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
 
-    <!-- 뱃지 -->
-    <TextView
-        android:id="@+id/text_badge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="4dp"
-        android:background="@drawable/badge_background"
-        android:textSize="12sp"
-    android:fontFamily="@font/pretendard_bold"
-    android:textColor="@android:color/white" />
+            <!-- 뱃지 -->
+            <TextView
+                android:id="@+id/text_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:background="@drawable/badge_background"
+                android:textSize="14sp"
+                android:fontFamily="@font/pretendard_bold"
+                android:textColor="@android:color/white"/>
+
+            <!-- 학교, 나이 -->
+            <TextView
+                android:id="@+id/text_school_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:fontFamily="@font/pretendard_medium"
+                android:textColor="#22172A"/>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

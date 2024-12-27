@@ -3,6 +3,7 @@ package com.example.myapplication_test1.ui.home
 import FriendAdapter
 import android.app.Dialog
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
@@ -16,6 +17,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication_test1.R
 import com.example.myapplication_test1.data.Friend
 import com.example.myapplication_test1.databinding.FragmentHomeBinding
@@ -23,11 +25,24 @@ import com.example.myapplication_test1.util.TypeMapper
 import com.google.android.material.textfield.TextInputEditText
 import java.util.Calendar
 
-
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val friendsList = mutableListOf<Friend>()
+
+    // ItemDecoration 클래스 추가
+    private class VerticalSpaceItemDecoration(private val verticalSpaceHeight: Int) :
+        RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect, view: View, parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            // 마지막 아이템이 아닌 경우에만 간격 추가
+            if (parent.getChildAdapterPosition(view) != parent.adapter?.itemCount?.minus(1)) {
+                outRect.bottom = verticalSpaceHeight
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +59,9 @@ class HomeFragment : Fragment() {
         binding.recyclerViewFriends.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = friendAdapter
+            addItemDecoration(VerticalSpaceItemDecoration(
+                resources.getDimensionPixelSize(R.dimen.item_spacing)
+            ))
         }
 
         return binding.root
