@@ -139,6 +139,27 @@ class HomeFragment : Fragment() {
                     val mbti = mbtiInput.text.toString().uppercase()
                     val pokemonType = TypeMapper.getTypeByMbti(mbti)
 
+                    // 이미지 리소스 ID 선택
+                    val imageResourceId = when (pokemonType.name) {
+                        "땅" -> listOf(R.drawable.ground_1, R.drawable.ground_2).random()
+                        "바위" -> listOf(R.drawable.rock_1, R.drawable.rock_2).random()
+                        "에스퍼" -> listOf(R.drawable.phychic_1, R.drawable.phychic_2).random()
+                        "악" -> listOf(R.drawable.dark_1, R.drawable.dark_2).random()
+                        "노말" -> listOf(R.drawable.normal_1, R.drawable.normal_2).random()
+                        "페어리" -> listOf(R.drawable.fairy_1, R.drawable.fairy_2).random()
+                        "물" -> listOf(R.drawable.water_1, R.drawable.water_2).random()
+                        "고스트" -> listOf(R.drawable.ghost_1, R.drawable.ghost_2).random()
+                        "드래곤" -> listOf(R.drawable.dragon_1, R.drawable.dragon_2).random()
+                        "전기" -> listOf(R.drawable.electric_1, R.drawable.electric_2).random()
+                        "비행" -> listOf(R.drawable.flying_1, R.drawable.flying_2).random()
+                        "격투" -> listOf(R.drawable.fighting_1, R.drawable.fighting_2).random()
+                        "강철" -> listOf(R.drawable.steel_1, R.drawable.steel_2).random()
+                        "풀" -> listOf(R.drawable.grass_1, R.drawable.grass_2).random()
+                        "불꽃" -> listOf(R.drawable.fire_1, R.drawable.fire_2).random()
+                        "독" -> listOf(R.drawable.poison_1, R.drawable.poison_2).random()
+                        else -> R.drawable.placeholder_image
+                    }
+
                     val friend = Friend(
                         name = nameInput.text.toString(),
                         birthYear = birthYearInput.text.toString(),
@@ -146,7 +167,8 @@ class HomeFragment : Fragment() {
                         mbti = mbti,
                         phoneNumber = phoneInput.text.toString(),
                         type = pokemonType.name,
-                        backgroundColor = pokemonType.backgroundColor
+                        backgroundColor = pokemonType.backgroundColor,
+                        imageResourceId = imageResourceId  // 선택된 이미지 리소스 ID 저장
                     )
 
                     friendsList.add(friend)
