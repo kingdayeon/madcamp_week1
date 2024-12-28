@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication_test1.R
 import com.example.myapplication_test1.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -28,15 +28,48 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        // 이미지 목록 (삐삐와 팬텀 이미지)
+        val images = listOf(
+            R.drawable.pipi,
+            R.drawable.phantom,
+            R.drawable.pikachu,
+            R.drawable.chikorita,
+            R.drawable.jamanbo,
+            R.drawable.kobugi
+        )
+
+        // RecyclerView 설정
+        val recyclerView = binding.recyclerView
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2) // 2열 그리드
+        recyclerView.adapter = GalleryAdapter(images)
+
+
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    // Inner Class로 GalleryAdapter 구현
+    inner class GalleryAdapter(private val imageList: List<Int>) :
+        RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder>() {
+
+        inner class GalleryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val imageView: android.widget.ImageView = itemView.findViewById(R.id.imageView)
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.fragment_gallery, parent, false)
+            return GalleryViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: GalleryViewHolder, position: Int) {
+            holder.imageView.setImageResource(imageList[position])
+        }
+
+        override fun getItemCount(): Int = imageList.size
     }
 }
