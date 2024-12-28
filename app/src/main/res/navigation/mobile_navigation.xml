@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.myapplication_test1.ui.notifications.NotificationsFragment"
+        android:id="@+id/navigation_appointments"
+        android:name="com.example.myapplication_test1.ui.appointments.AppointmentsFragment"
         android:label="@string/title_tab3"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_appointments" />
 </navigation>

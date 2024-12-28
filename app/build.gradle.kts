@@ -48,7 +48,9 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation("androidx.recyclerview:recyclerview:1.3.1")
-    implementation("io.coil-kt:coil:2.5.0")  // Coil 추가
+    implementation("io.coil-kt:coil:2.5.0")
+    implementation(libs.play.services.maps)
+//    implementation(libs.androidx.media3.common.ktx)  // Coil 추가
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
