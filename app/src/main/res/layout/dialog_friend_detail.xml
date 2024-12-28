@@ -245,7 +245,7 @@
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="친구 삭제"
+            android:text="헤어지기"
             android:textColor="#FF0000"
             android:layout_gravity="end"
             android:layout_marginTop="16dp"
