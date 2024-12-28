@@ -9,12 +9,16 @@
     <!-- Bottom Navigation View -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/nav_background"
+        app:itemRippleColor="@android:color/transparent"
+        app:itemBackground="@android:color/transparent"
+        android:paddingBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        style="@style/BottomNavigationStyle"
         app:menu="@menu/bottom_nav_menu" />
 
     <!-- Navigation Host Fragment -->
