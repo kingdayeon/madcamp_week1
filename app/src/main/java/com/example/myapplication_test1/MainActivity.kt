@@ -13,6 +13,9 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.widget.Toast
+import com.example.myapplication_test1.ui.dashboard.DashboardFragment
+import android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +24,13 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val REQUEST_CODE_READ_STORAGE = 100 // 권한 요청 코드
     }
+    //gallery launcher
+    val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            val DashboardFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)
+            (DashboardFragment?.childFragmentManager?.fragments?.get(0) as? DashboardFragment)?.addImage(it)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        checkAndRequestStoragePermission()
 
         val navView: BottomNavigationView = binding.navView
 
@@ -61,6 +72,12 @@ class MainActivity : AppCompatActivity() {
             // 권한이 이미 허용된 경우
             onStoragePermissionGranted()
         }
+    }
+
+    private fun onImageSelected(uri: Uri) {
+        // Pass the image URI to `DashboardFragment`
+        val dashboardFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)
+        (dashboardFragment?.childFragmentManager?.fragments?.get(0) as? DashboardFragment)?.addImage(uri)
     }
 
     // 권한 요청 결과 처리
