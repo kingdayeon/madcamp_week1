@@ -12,14 +12,17 @@ import java.util.Date
 import java.util.Locale
 
 class AppointmentAdapter(
-    private val appointmentList: List<Appointment>,
-    private val onLocationClick: (LatLng) -> Unit
+    private val appointmentList: MutableList<Appointment>, //그냥 리스트와 뭔 차이?
+    private val onLocationClick: (LatLng) -> Unit,
+    private val onDeleteClick: (Int) -> Unit  // 삭제 콜백 추가
 ) : RecyclerView.Adapter<AppointmentAdapter.AppointmentViewHolder>() {
 
     private val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA)
     private lateinit var appointmentAdapter: AppointmentAdapter
 
     class AppointmentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val deleteButton: TextView = itemView.findViewById(R.id.deleteButton)
+
         val dateText: TextView = itemView.findViewById(R.id.dateText)
         val titleText: TextView = itemView.findViewById(R.id.titleText)
         val friendText: TextView = itemView.findViewById(R.id.friendText)
@@ -41,6 +44,11 @@ class AppointmentAdapter(
 
         // 제목 표시
         holder.titleText.text = appointment.title
+
+        // 삭제 버튼 클릭 리스너
+        holder.deleteButton.setOnClickListener {
+            onDeleteClick(position)  // Fragment에서 처리하도록 콜백 전달
+        }
 
         // 친구 표시 ("친구와 약속" 또는 "XX 친구와 약속")
         holder.friendText.visibility = View.VISIBLE

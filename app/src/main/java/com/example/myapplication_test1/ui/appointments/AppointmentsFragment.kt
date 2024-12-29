@@ -62,14 +62,21 @@ class AppointmentsFragment : Fragment() {
         }
 
         // RecyclerView 초기화
-        appointmentAdapter = AppointmentAdapter(appointmentsList) { location ->
-            // 클릭 시 구글맵으로 이동
-            val gmmIntentUri = Uri.parse("geo:${location.latitude},${location.longitude}?z=16")
-            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
-                setPackage("com.google.android.apps.maps")
+        appointmentAdapter = AppointmentAdapter(
+            appointmentsList,  // MutableList로 선언된 리스트
+            onLocationClick = { latLng ->  // 위치 클릭 콜백
+                val gmmIntentUri = Uri.parse("geo:${latLng.latitude},${latLng.longitude}?z=16")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
+                    setPackage("com.google.android.apps.maps")
+                }
+                startActivity(mapIntent)
+            },
+            onDeleteClick = { position ->  // 삭제 버튼 클릭 콜백
+                appointmentsList.removeAt(position)
+                appointmentAdapter.notifyItemRemoved(position)
+                appointmentAdapter.notifyItemRangeChanged(position, appointmentsList.size)
             }
-            startActivity(mapIntent)
-        }
+        )
 
         binding.recyclerViewAppointments.apply {
             layoutManager = LinearLayoutManager(context)
@@ -162,9 +169,10 @@ class AppointmentsFragment : Fragment() {
                 }
                 else -> {
                     // 친구 선택 처리 로직 추가
-                    val selectedFriend = friendInput?.text.toString()
-                    val friendList = if (selectedFriend.isNotEmpty()) {
-                        HomeFragment.getFriendsList().filter { it.name == selectedFriend }
+                    val selectedFriendText = friendInput?.text.toString()
+                    val friendName = selectedFriendText.split(" (")[0] // 괄호 앞의 이름만 추출
+                    val friendList = if (selectedFriendText.isNotEmpty()) {
+                        HomeFragment.getFriendsList().filter { it.name == friendName }
                     } else {
                         emptyList()
                     }

@@ -64,14 +64,18 @@ class AppointmentsListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         appointmentAdapter = AppointmentAdapter(
-            appointmentsList,
+            appointmentsList,  // 이미 MutableList로 선언되어 있음
             onLocationClick = { latLng ->
-                // 구글맵으로 이동하는 인텐트 실행
                 val gmmIntentUri = Uri.parse("geo:${latLng.latitude},${latLng.longitude}?z=16")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
                     setPackage("com.google.android.apps.maps")
                 }
                 startActivity(mapIntent)
+            },
+            onDeleteClick = { position ->
+                appointmentsList.removeAt(position)
+                appointmentAdapter.notifyItemRemoved(position)
+                appointmentAdapter.notifyItemRangeChanged(position, appointmentsList.size)
             }
         )
 
@@ -166,9 +170,10 @@ class AppointmentsListFragment : Fragment() {
                 }
                 else -> {
                     // 친구 선택 처리 로직 추가
-                    val selectedFriend = friendInput?.text.toString()
-                    val friendList = if (selectedFriend.isNotEmpty()) {
-                        HomeFragment.getFriendsList().filter { it.name == selectedFriend }
+                    val selectedFriendText = friendInput?.text.toString()
+                    val friendName = selectedFriendText.split(" (")[0] // 괄호 앞의 이름만 추출
+                    val friendList = if (selectedFriendText.isNotEmpty()) {
+                        HomeFragment.getFriendsList().filter { it.name == friendName }
                     } else {
                         emptyList()
                     }
