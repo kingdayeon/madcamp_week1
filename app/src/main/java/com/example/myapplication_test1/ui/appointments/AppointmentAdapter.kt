@@ -59,17 +59,19 @@ class AppointmentAdapter(
             holder.friendText.text = "친구와 약속 🍀"
         }
 
-        // 위치 표시 (있는 경우에만)
-        if (appointment.location.isNotEmpty() && appointment.locationLatLng != null) {
-            holder.locationText.visibility = View.VISIBLE
+        // 위치 표시 로직 수정
+        holder.locationText.visibility = View.VISIBLE  // 항상 보이게 설정
+        if (appointment.locationLatLng != null && appointment.location.isNotEmpty()
+            && appointment.location != "포켓스톱") {
             holder.locationText.text = "📍 ${appointment.location}"
-            // 위치 클릭 시 구글 맵으로 이동
             holder.locationText.setOnClickListener {
                 onLocationClick(appointment.locationLatLng)
             }
         } else {
-            holder.locationText.visibility = View.GONE
+            holder.locationText.text = "\uD83D\uDCCD 포켓스톱"
+            holder.locationText.setOnClickListener(null)  // 클릭 리스너 제거
         }
+
 
         // 메모 표시 (있는 경우에만)
         if (appointment.memo.isNotEmpty()) {

@@ -94,6 +94,8 @@ class AppointmentsListFragment : Fragment() {
         currentDialog?.setContentView(R.layout.dialog_add_appointment)
         currentDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+
+
         // 친구 선택 드롭다운 설정
         val friendInput = currentDialog?.findViewById<AutoCompleteTextView>(R.id.friendInput)
         val friends = HomeFragment.getFriendsList()
@@ -111,6 +113,11 @@ class AppointmentsListFragment : Fragment() {
         val memoInput = currentDialog?.findViewById<TextInputEditText>(R.id.memoInput)
         val confirmButton = currentDialog?.findViewById<Button>(R.id.confirmButton)
         val cancelButton = currentDialog?.findViewById<Button>(R.id.cancelButton)
+
+        // 위치 정보 초기화
+        selectedLocation = null
+        selectedLocationName = null
+        locationInput?.setText("포켓스톱")  // 기본값으로 설정
 
         // 날짜 선택 리스너
         dateInput?.setOnClickListener {
@@ -180,11 +187,11 @@ class AppointmentsListFragment : Fragment() {
 
                     // 약속 데이터 생성
                     val newAppointment = Appointment(
-                        date = selectedDate, // 선택된 날짜
+                        date = selectedDate,
                         title = titleInput?.text.toString(),
-                        friends = friendList, // 선택한 친구 리스트 추가
-                        location = selectedLocationName ?: "위치 미정",
-                        locationLatLng = selectedLocation,
+                        friends = friendList,
+                        location = selectedLocationName ?: "포켓스톱",
+                        locationLatLng = if (selectedLocation != null && selectedLocationName != null) selectedLocation else null,
                         memo = memoInput?.text.toString()
                     )
 
