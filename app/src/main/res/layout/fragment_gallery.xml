@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="160dp"
     android:layout_height="200dp"
     android:layout_margin="8dp"
-    android:radius="8dp">
+    app:cardCornerRadius="16dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardElevation="4dp"> <!-- 적당한 그림자 효과 -->
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+    app:shapeAppearanceOverlay="@style/RoundedImageView"
+    android:background="@android:color/transparent"
+    android:padding="0dp" />
 </androidx.cardview.widget.CardView>
