@@ -2,6 +2,8 @@ package com.example.myapplication_test1.ui.appointments
 
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Intent
+import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -14,18 +16,27 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-//import androidx.media3.common.util.Log
-import com.example.myapplication_test1.MainActivity
 import com.example.myapplication_test1.R
-import com.example.myapplication_test1.databinding.FragmentAppointmentsBinding  // 여기 변경
+import com.example.myapplication_test1.databinding.FragmentAppointmentsBinding
 import com.example.myapplication_test1.ui.home.HomeFragment
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.gms.maps.model.LatLng
 import java.util.Calendar
 
 class AppointmentsFragment : Fragment() {
-
-    private var _binding: FragmentAppointmentsBinding? = null  // 여기 변경
+    private var _binding: FragmentAppointmentsBinding? = null
     private val binding get() = _binding!!
+    private var selectedLocation: LatLng? = null
+    private var selectedLocationName: String? = null
+    private var currentDialog: Dialog? = null
+
+    companion object {
+        private const val AUTOCOMPLETE_REQUEST_CODE = 1
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,51 +45,38 @@ class AppointmentsFragment : Fragment() {
     ): View {
         _binding = FragmentAppointmentsBinding.inflate(inflater, container, false)
 
-        // 포켓볼 이미지 클릭 리스너 설정
         binding.pokeballImage.setOnClickListener {
             showAddAppointmentDialog()
         }
 
         return binding.root
     }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 
     private fun showAddAppointmentDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.dialog_add_appointment) // 방금 만든 레이아웃
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        currentDialog = Dialog(requireContext())
+        currentDialog?.setContentView(R.layout.dialog_add_appointment)
+        currentDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         // 친구 선택 드롭다운 설정
-        val friendInput = dialog.findViewById<AutoCompleteTextView>(R.id.friendInput)
-
-// HomeFragment의 companion object를 통해 직접 친구 목록을 가져옴
+        val friendInput = currentDialog?.findViewById<AutoCompleteTextView>(R.id.friendInput)
         val friends = HomeFragment.getFriendsList()
-
-        Log.d("AppointmentsFragment", "Friends size: ${friends.size}")
-
         val friendAdapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_dropdown_item_1line,  // 기본 드롭다운 레이아웃 사용
+            android.R.layout.simple_dropdown_item_1line,
             friends.map { "${it.name} (${it.school})" }
         )
-
-        friendInput.setAdapter(friendAdapter)
-
+        friendInput?.setAdapter(friendAdapter)
 
         // 각 입력 필드 참조
-        val titleInput = dialog.findViewById<TextInputEditText>(R.id.titleInput)
-        val dateInput = dialog.findViewById<TextInputEditText>(R.id.dateInput)
-        val locationInput = dialog.findViewById<TextInputEditText>(R.id.locationInput)
+        val titleInput = currentDialog?.findViewById<TextInputEditText>(R.id.titleInput)
+        val dateInput = currentDialog?.findViewById<TextInputEditText>(R.id.dateInput)
+        val locationInput = currentDialog?.findViewById<TextInputEditText>(R.id.locationInput)
+        val memoInput = currentDialog?.findViewById<TextInputEditText>(R.id.memoInput)
+        val confirmButton = currentDialog?.findViewById<Button>(R.id.confirmButton)
+        val cancelButton = currentDialog?.findViewById<Button>(R.id.cancelButton)
 
-        val memoInput = dialog.findViewById<TextInputEditText>(R.id.memoInput)
-        val confirmButton = dialog.findViewById<Button>(R.id.confirmButton)
-        val cancelButton = dialog.findViewById<Button>(R.id.cancelButton)
-
-        // 날짜 선택 클릭 리스너
-        dateInput.setOnClickListener {
+        // 날짜 선택 리스너
+        dateInput?.setOnClickListener {
             val calendar = Calendar.getInstance()
             DatePickerDialog(
                 requireContext(),
@@ -92,39 +90,79 @@ class AppointmentsFragment : Fragment() {
             ).show()
         }
 
-        // 위치 선택 클릭 리스너
-        locationInput.setOnClickListener {
-            // 여기에 구글 맵 실행 코드가 들어갈 예정
-            // 지금은 임시로 토스트 메시지만 표시
-            Toast.makeText(context, "위치 선택 기능 구현 예정", Toast.LENGTH_SHORT).show()
+        // 위치 선택 리스너
+        locationInput?.setOnClickListener {
+            try {
+                val fields = listOf(
+                    Place.Field.ID,
+                    Place.Field.NAME,
+                    Place.Field.LAT_LNG,
+                    Place.Field.ADDRESS
+                )
+                val intent = Autocomplete.IntentBuilder(
+                    AutocompleteActivityMode.FULLSCREEN, fields
+                )
+                    .setCountry("KR")
+                    .build(requireContext())
+                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+            } catch (e: Exception) {
+                Toast.makeText(context, "구글 맵을 실행할 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        // 취소 버튼
-        cancelButton.setOnClickListener {
-            dialog.dismiss()
+        // 취소/등록 버튼 리스너
+        cancelButton?.setOnClickListener {
+            currentDialog?.dismiss()
         }
 
-        // 등록 버튼
-        confirmButton.setOnClickListener {
-            // 필수 입력값 검증
+        confirmButton?.setOnClickListener {
             when {
-                titleInput.text.isNullOrEmpty() -> {
-                    titleInput.error = "약속 제목을 입력해주세요"
-                    titleInput.requestFocus()
+                titleInput?.text.isNullOrEmpty() -> {
+                    titleInput?.error = "약속 제목을 입력해주세요"
+                    titleInput?.requestFocus()
                 }
-                dateInput.text.isNullOrEmpty() -> {
-                    dateInput.error = "날짜를 선택해주세요"
-                    dateInput.requestFocus()
+                dateInput?.text.isNullOrEmpty() -> {
+                    dateInput?.error = "날짜를 선택해주세요"
+                    dateInput?.requestFocus()
                 }
                 else -> {
-                    // 약속 생성 로직
-                    // 추후 구현 예정
-                    dialog.dismiss()
+                    // TODO: 약속 생성 로직 구현
+                    currentDialog?.dismiss()
                 }
             }
         }
 
-        dialog.show()
+        currentDialog?.show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    data?.let {
+                        val place = Autocomplete.getPlaceFromIntent(data)
+                        selectedLocation = place.latLng
+                        selectedLocationName = place.name
+                        currentDialog?.findViewById<TextInputEditText>(R.id.locationInput)?.setText(place.name)
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    data?.let {
+                        val status = Autocomplete.getStatusFromIntent(data)
+                        Toast.makeText(context, "오류: ${status.statusMessage}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                Activity.RESULT_CANCELED -> {
+                    // 사용자가 취소한 경우
+                }
+            }
+            return
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
-

@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication_test1.data.Friend
 import com.example.myapplication_test1.databinding.ActivityMainBinding
 import com.example.myapplication_test1.ui.home.HomeFragment
+import com.google.android.libraries.places.api.Places
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +18,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Places API 초기화
+        Places.initialize(applicationContext, getString(R.string.google_maps_key))
         supportActionBar?.hide()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
