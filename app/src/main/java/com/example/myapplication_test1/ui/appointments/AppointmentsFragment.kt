@@ -6,6 +6,7 @@ import android.content.Intent
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication_test1.R
 import com.example.myapplication_test1.databinding.FragmentAppointmentsBinding
 import com.example.myapplication_test1.ui.home.HomeFragment
@@ -26,16 +28,26 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.gms.maps.model.LatLng
 import java.util.Calendar
+import com.example.myapplication_test1.AppointmentAdapter
+import com.example.myapplication_test1.data.Appointment
+import com.example.myapplication_test1.data.Friend
 
 class AppointmentsFragment : Fragment() {
     private var _binding: FragmentAppointmentsBinding? = null
     private val binding get() = _binding!!
+
+    // 약속 데이터를 저장하는 리스트 선언
+    private val appointmentsList = mutableListOf<Appointment>()
+
+    private lateinit var appointmentAdapter: AppointmentAdapter
+
+
     private var selectedLocation: LatLng? = null
     private var selectedLocationName: String? = null
     private var currentDialog: Dialog? = null
 
     companion object {
-        private const val AUTOCOMPLETE_REQUEST_CODE = 1
+        const val AUTOCOMPLETE_REQUEST_CODE = 1
     }
 
     override fun onCreateView(
@@ -49,8 +61,24 @@ class AppointmentsFragment : Fragment() {
             showAddAppointmentDialog()
         }
 
+        // RecyclerView 초기화
+        appointmentAdapter = AppointmentAdapter(appointmentsList) { location ->
+            // 클릭 시 구글맵으로 이동
+            val gmmIntentUri = Uri.parse("geo:${location.latitude},${location.longitude}?z=16")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
+                setPackage("com.google.android.apps.maps")
+            }
+            startActivity(mapIntent)
+        }
+
+        binding.recyclerViewAppointments.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = appointmentAdapter
+        }
+
         return binding.root
     }
+    private var selectedDate: Long = 0L
 
     private fun showAddAppointmentDialog() {
         currentDialog = Dialog(requireContext())
@@ -75,14 +103,21 @@ class AppointmentsFragment : Fragment() {
         val confirmButton = currentDialog?.findViewById<Button>(R.id.confirmButton)
         val cancelButton = currentDialog?.findViewById<Button>(R.id.cancelButton)
 
+
         // 날짜 선택 리스너
         dateInput?.setOnClickListener {
             val calendar = Calendar.getInstance()
             DatePickerDialog(
                 requireContext(),
                 { _, selectedYear, month, day ->
-                    val selectedDate = "${selectedYear}년 ${month + 1}월 ${day}일"
-                    dateInput.setText(selectedDate)
+                    // 선택된 날짜를 설정
+                    val calendarSelected = Calendar.getInstance().apply {
+                        set(selectedYear, month, day)
+                    }
+                    selectedDate = calendarSelected.timeInMillis
+
+                    // 선택된 날짜를 입력 필드에 표시
+                    dateInput.setText("${selectedYear}년 ${month + 1}월 ${day}일")
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -126,7 +161,34 @@ class AppointmentsFragment : Fragment() {
                     dateInput?.requestFocus()
                 }
                 else -> {
-                    // TODO: 약속 생성 로직 구현
+                    // 친구 선택 처리 로직 추가
+                    val selectedFriend = friendInput?.text.toString()
+                    val friendList = if (selectedFriend.isNotEmpty()) {
+                        HomeFragment.getFriendsList().filter { it.name == selectedFriend }
+                    } else {
+                        emptyList()
+                    }
+
+                    // 약속 데이터 생성
+                    val newAppointment = Appointment(
+                        date = selectedDate, // 선택된 날짜
+                        title = titleInput?.text.toString(),
+                        friends = friendList, // 선택한 친구 리스트 추가
+                        location = selectedLocationName ?: "위치 미정",
+                        locationLatLng = selectedLocation,
+                        memo = memoInput?.text.toString()
+                    )
+
+                    // 리스트에 추가
+                    appointmentsList.add(newAppointment)
+
+                    // 날짜순 정렬
+                    appointmentsList.sortBy { it.date }
+
+                    // 어댑터에 변경 알림
+                    appointmentAdapter.notifyDataSetChanged()
+
+                    // 다이얼로그 닫기
                     currentDialog?.dismiss()
                 }
             }
