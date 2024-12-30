@@ -26,14 +26,13 @@ class DashboardFragment : Fragment() {
     private val binding get() = _binding!!
     private val CAMERA_REQUEST_CODE = 101
 
-    // 이미지 목록 (기본 이미    지 + 동적으로 추가될 이미지)
+    // 이미지 목록 (기본 이미지 + 동적으로 추가될 이미지)
     private val imageList = mutableListOf<Any>(
-        R.drawable.pipi,
-        R.drawable.phantom,
-        R.drawable.pikachu,
-        R.drawable.chikorita,
-        R.drawable.jamanbo,
-        R.drawable.kobugi
+        R.drawable.baseimg01,
+        R.drawable.baseimg02,
+        R.drawable.baseimg03,
+        R.drawable.baseimg04,
+        R.drawable.baseimg05
     )
     private lateinit var galleryAdapter: GalleryAdapter
 
