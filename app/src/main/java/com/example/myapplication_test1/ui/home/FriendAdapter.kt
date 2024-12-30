@@ -20,6 +20,7 @@ import com.example.myapplication_test1.R
 import com.example.myapplication_test1.data.Friend
 import com.example.myapplication_test1.util.TypeMapper
 import java.util.Calendar
+import com.example.myapplication_test1.ui.home.HomeFragment
 
 class FriendAdapter(
     private val friendList: List<Friend>,
@@ -205,6 +206,7 @@ class FriendAdapter(
         // 삭제 버튼 클릭 시
         deleteButton.setOnClickListener {
             onFriendDelete(friend)
+            HomeFragment.removeFriend(friend)  // 추가: companion object의 리스트에서도 삭제
             showCustomToast(context, "${friend.name}몬이(가) 방출되었습니다!", true)
             dialog.dismiss()
         }
