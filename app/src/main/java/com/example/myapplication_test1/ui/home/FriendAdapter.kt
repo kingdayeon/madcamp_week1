@@ -42,7 +42,7 @@ class FriendAdapter(
 
         // 학교와 나이 설정
         val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
-        val age = currentYear - (friend.birthYear.toIntOrNull() ?: currentYear)
+        val age = currentYear - (friend.birthYear.toIntOrNull() ?: currentYear) + 1
         holder.schoolAndAgeTextView.text = "${friend.school} • ${age}살"
 
         // TypeMapper를 통해 색상 정보 가져오기
@@ -163,7 +163,7 @@ class FriendAdapter(
         // 이름과 레벨 설정
         nameMonText.text = "${friend.name}몬"
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        val age = currentYear - (friend.birthYear.toIntOrNull() ?: currentYear)
+        val age = currentYear - (friend.birthYear.toIntOrNull() ?: currentYear) + 1
         levelText.text = "Lv.${age}"
 
 //        // 이미지와 배경 설정
