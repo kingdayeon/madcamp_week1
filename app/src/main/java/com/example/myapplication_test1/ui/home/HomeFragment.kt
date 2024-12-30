@@ -275,12 +275,20 @@ import com.example.myapplication_test1.databinding.FragmentHomeBinding
 import com.example.myapplication_test1.util.TypeMapper
 import com.google.android.material.textfield.TextInputEditText
 import java.util.Calendar
+import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val friendsList = mutableListOf<Friend>()
     private lateinit var friendAdapter: FriendAdapter
+    private lateinit var sharedPreferences: SharedPreferences
+
+    private val PREFS_NAME = "FriendPrefs"
+    private val FRIENDS_KEY = "friendsList"
 
     // ItemDecoration 클래스 추가
     private class VerticalSpaceItemDecoration(private val verticalSpaceHeight: Int) :
@@ -302,9 +310,15 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        // Initialize SharedPreferences
+        sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
+
+        loadFriends() // load saved list
+
         friendAdapter = FriendAdapter(friendsList) { friend ->
             friendsList.remove(friend)
             friendAdapter.notifyDataSetChanged()
+            saveFriends() // save deletion
 //            Toast.makeText(context, "${friend.name}몬이(가) 방출되었습니다!", Toast.LENGTH_SHORT).show()
         }
 
@@ -426,6 +440,7 @@ class HomeFragment : Fragment() {
 
                     friendsList.add(friend)
                     addFriend(friend)  // companion object의 리스트에도 추가
+                    saveFriends()
                     friendAdapter.notifyDataSetChanged()
                     showCustomToast("포켓몬 ${friend.name}을(를) 잡았다!", false)
                     dialog.dismiss()
@@ -434,6 +449,28 @@ class HomeFragment : Fragment() {
         }
 
         dialog.show()
+    }
+
+    private fun saveFriends() {
+        val editor = sharedPreferences.edit()
+        val json = Gson().toJson(friendsList)
+        editor.putString(FRIENDS_KEY, json)
+        editor.apply()
+    }
+
+    private fun loadFriends() {
+        val json = sharedPreferences.getString(FRIENDS_KEY, null)
+        if (!json.isNullOrEmpty()) {
+            val type = object : TypeToken<MutableList<Friend>>() {}.type
+            val savedFriends: MutableList<Friend> = Gson().fromJson(json, type)
+            friendsList.clear()
+            friendsList.addAll(savedFriends)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun showCustomToast(message: String, isError: Boolean) {
@@ -473,11 +510,6 @@ class HomeFragment : Fragment() {
         } catch (e: NumberFormatException) {
             false
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     fun getFriendsList(): List<Friend> {

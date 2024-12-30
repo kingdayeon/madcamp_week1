@@ -72,9 +72,6 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        // 권한 요청 호출
-        checkAndRequestStoragePermission()
-
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
