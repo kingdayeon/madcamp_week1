@@ -47,8 +47,28 @@ class AppointmentsFragment : Fragment() {
     private var currentDialog: Dialog? = null
 
     companion object {
+
+        // static 리스트로 약속 데이터 유지
+        private val _appointmentsList = mutableListOf<Appointment>()
+
+        fun addAppointment(appointment: Appointment) {
+            _appointmentsList.add(appointment)
+            _appointmentsList.sortBy { it.date }  // 날짜순 정렬 유지
+        }
+
+        fun getAppointmentsList(): List<Appointment> {
+            return _appointmentsList.toList()
+        }
+
+        fun removeAppointment(position: Int) {
+            if (position in 0 until _appointmentsList.size) {
+                _appointmentsList.removeAt(position)
+            }
+        }
         const val AUTOCOMPLETE_REQUEST_CODE = 1
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +76,10 @@ class AppointmentsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAppointmentsBinding.inflate(inflater, container, false)
+
+        // 저장된 약속 목록 불러오기
+        appointmentsList.clear()
+        appointmentsList.addAll(getAppointmentsList())
 
         binding.pokeballImage.setOnClickListener {
             showAddAppointmentDialog()
@@ -73,6 +97,7 @@ class AppointmentsFragment : Fragment() {
             },
             onDeleteClick = { position ->  // 삭제 버튼 클릭 콜백
                 appointmentsList.removeAt(position)
+                removeAppointment(position)  // companion object의 리스트에서도 삭제
                 appointmentAdapter.notifyItemRemoved(position)
                 appointmentAdapter.notifyItemRangeChanged(position, appointmentsList.size)
             }
@@ -193,6 +218,8 @@ class AppointmentsFragment : Fragment() {
                     )
                     // 리스트에 추가
                     appointmentsList.add(newAppointment)
+
+                    addAppointment(newAppointment)  // companion object에도 추가
 
                     // 날짜순 정렬
                     appointmentsList.sortBy { it.date }
