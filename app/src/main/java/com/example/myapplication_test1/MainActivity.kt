@@ -19,10 +19,24 @@ import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.myapplication_test1.ui.home.HomeFragment
 import com.google.android.libraries.places.api.Places
+import android.os.Build
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val REQUEST_STORAGE_PERMISSION = 102
+
+    private fun checkStoragePermission(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(permission), REQUEST_STORAGE_PERMISSION)
+                return false
+            }
+        }
+        return true
+    }
 
     companion object {
         private const val REQUEST_CODE_READ_STORAGE = 100 // 권한 요청 코드
