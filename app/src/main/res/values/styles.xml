@@ -2,6 +2,13 @@
 <resources>
     <style name="RoundedImageView" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16dp</item> <!-- 모서리 둥근 정도를 dp 단위로 설정 -->
+        <item name="cornerSize">8dp</item> <!-- 모서리 둥근 정도를 dp 단위로 설정 -->
     </style>
+
+    <style name="Theme.Splash" parent="Theme.Material3.DayNight">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:windowNoTitle">true</item> <!-- 타이틀바 숨김 -->
+        <item name="android:windowFullscreen">true</item> <!-- 전체 화면 -->
+    </style>
+
 </resources>

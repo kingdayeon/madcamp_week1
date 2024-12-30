@@ -425,6 +425,7 @@ class HomeFragment : Fragment() {
                     )
 
                     friendsList.add(friend)
+                    addFriend(friend)  // companion object의 리스트에도 추가
                     friendAdapter.notifyDataSetChanged()
                     showCustomToast("포켓몬 ${friend.name}을(를) 잡았다!", false)
                     dialog.dismiss()
@@ -477,5 +478,22 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun getFriendsList(): List<Friend> {
+        return friendsList.toList()
+    }
+
+    companion object {
+        // static 변수로 friendsList를 관리
+        private var _friendsList = mutableListOf<Friend>()
+
+        fun addFriend(friend: Friend) {
+            _friendsList.add(friend)
+        }
+
+        fun getFriendsList(): List<Friend> {
+            return _friendsList.toList()
+        }
     }
 }

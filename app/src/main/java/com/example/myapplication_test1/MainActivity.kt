@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.myapplication_test1.data.Friend
 import com.example.myapplication_test1.databinding.ActivityMainBinding
 import android.Manifest
 import android.content.pm.PackageManager
@@ -16,6 +17,8 @@ import android.widget.Toast
 import com.example.myapplication_test1.ui.dashboard.DashboardFragment
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.myapplication_test1.ui.home.HomeFragment
+import com.google.android.libraries.places.api.Places
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,6 +39,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide() // ActionBar 숨기기
 
+        // Places API 초기화
+        Places.initialize(applicationContext, getString(R.string.google_maps_key))
+        supportActionBar?.hide()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         checkAndRequestStoragePermission()
@@ -47,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_appointments
             )
         )
 
@@ -102,5 +109,10 @@ class MainActivity : AppCompatActivity() {
     private fun onStoragePermissionGranted() {
         Toast.makeText(this, "권한이 허용되었습니다!", Toast.LENGTH_SHORT).show()
         // 갤러리 열기 또는 다른 작업 실행
+    }
+
+    fun getFriendsList(): List<Friend> {
+        val homeFragment = supportFragmentManager.fragments.firstOrNull { it is HomeFragment } as? HomeFragment
+        return homeFragment?.getFriendsList() ?: emptyList()
     }
 }

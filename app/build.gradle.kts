@@ -17,6 +17,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -38,6 +39,12 @@ android {
     }
 }
 
+configurations {
+    implementation {
+        exclude(group = "com.intellij", module = "annotations")
+    }
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -50,6 +57,14 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2") // 추가된 RecyclerView
     implementation("io.coil-kt:coil:2.5.0") // 추가된 Coil
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
+    implementation("io.coil-kt:coil:2.5.0")
+    implementation(libs.play.services.maps)
+    implementation ("com.google.android.libraries.places:places:3.3.0")
+    implementation(libs.play.services.places)
+    implementation(libs.androidx.room.compiler)
+    implementation(libs.androidx.activity)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
