@@ -8,18 +8,18 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.myapplication_test1.ui.home.HomeFragment"
-        android:label="@string/title_home"
+        android:label="@string/title_tab1"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.myapplication_test1.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/title_tab2"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.myapplication_test1.ui.notifications.NotificationsFragment"
-        android:label="알리림"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_appointments"
+        android:name="com.example.myapplication_test1.ui.appointments.AppointmentsFragment"
+        android:label="@string/title_tab3"
+        tools:layout="@layout/fragment_appointments" />
 </navigation>
