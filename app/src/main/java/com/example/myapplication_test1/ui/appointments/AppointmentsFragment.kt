@@ -1,5 +1,8 @@
 package com.example.myapplication_test1.ui.appointments
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Intent
@@ -9,6 +12,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -68,7 +73,49 @@ class AppointmentsFragment : Fragment() {
         loadAppointments()
 
         binding.pokeballImage.setOnClickListener {
-            showAddAppointmentDialog()
+            // Step 1: 포켓볼 회전 및 깜빡이는 애니메이션 설정
+            val rotateAnimation = ObjectAnimator.ofFloat(binding.pokeballImage, "rotation", 0f, 30f).apply {
+                duration = 300
+            }
+            val darkenAnimation = ObjectAnimator.ofFloat(binding.pokeballImage, "alpha", 1f, 0.7f).apply {
+                duration = 150
+                repeatMode = ObjectAnimator.REVERSE
+                repeatCount = 1
+            }
+
+            val animatorSet = AnimatorSet()
+            animatorSet.playSequentially(rotateAnimation, darkenAnimation)
+
+            // Step 2: 애니메이션이 끝난 후 다이얼로그 표시
+            animatorSet.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {}
+
+                override fun onAnimationEnd(animation: Animator) {
+                    showAddAppointmentDialog() // 다이얼로그 표시
+
+                    // 다이얼로그가 닫힐 때 다시 원래 상태로 돌아오는 애니메이션 실행
+                    val returnRotateAnimation = ObjectAnimator.ofFloat(binding.pokeballImage, "rotation", 30f, 0f).apply {
+                        duration = 300
+                    }
+                    val returnAlphaAnimation = ObjectAnimator.ofFloat(binding.pokeballImage, "alpha", 0.7f, 1f).apply {
+                        duration = 150
+                    }
+
+                    val returnAnimatorSet = AnimatorSet()
+                    returnAnimatorSet.playTogether(returnRotateAnimation, returnAlphaAnimation)
+
+                    // 다이얼로그가 닫힌 후 실행되도록 Handler로 지연 처리
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        returnAnimatorSet.start()
+                    }, 500) // 다이얼로그가 종료될 때까지 기다리는 시간
+                }
+
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationRepeat(animation: Animator) {}
+            })
+
+            // Step 3: 애니메이션 시작
+            animatorSet.start()
         }
 
         // RecyclerView 초기화

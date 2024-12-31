@@ -21,5 +21,5 @@
         android:id="@+id/navigation_appointments"
         android:name="com.example.myapplication_test1.ui.appointments.AppointmentsFragment"
         android:label="@string/title_tab3"
-        tools:layout="@layout/fragment_appointments" />
+        tools:layout="@layout/fragment_appointments"/>
 </navigation>
