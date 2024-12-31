@@ -127,7 +127,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getFriendsList(): List<Friend> {
-        val homeFragment = supportFragmentManager.fragments.firstOrNull { it is HomeFragment } as? HomeFragment
-        return homeFragment?.getFriendsList() ?: emptyList()
+        return HomeFragment.getFriendsList()
     }
 }
