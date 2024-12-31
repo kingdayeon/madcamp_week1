@@ -38,5 +38,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/white" />
 
+    <!-- Pokemon 로고 -->
+    <ImageView
+        android:id="@+id/pokemonLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pokemon_logo"
+        app:layout_constraintBottom_toTopOf="@id/whiteLogo"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
