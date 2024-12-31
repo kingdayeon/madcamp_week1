@@ -8,5 +8,5 @@ data class Friend(
     val phoneNumber: String,
     val type: String,  // 포켓몬 속성
     val backgroundColor: String,  // 배경색
-    val imageResourceId: Int  // 포켓몬 이미지 리소스 ID
+    val imageUrl: String
 )

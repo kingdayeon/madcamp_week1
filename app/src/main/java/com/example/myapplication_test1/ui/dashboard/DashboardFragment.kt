@@ -1,5 +1,6 @@
 package com.example.myapplication_test1.ui.dashboard
 
+import android.animation.Animator
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -124,22 +125,55 @@ class DashboardFragment : Fragment() {
 
         // "이미지 추가" 버튼 클릭 이벤트
         binding.addImageButton.setOnClickListener {
-            val options = arrayOf("갤러리에서 선택", "카메라로 촬영")
-            AlertDialog.Builder(requireContext())
-                .setTitle("이미지 추가")
-                .setItems(options) { _, which ->
-                    when (which) {
-                        0 -> { // 갤러리에서 선택
-                            (activity as? com.example.myapplication_test1.MainActivity)?.galleryLauncher?.launch("image/*")
+            // Step 1: 버튼 애니메이션 설정
+            val rotateAnimation = ObjectAnimator.ofFloat(binding.addImageButton, "rotation", 0f, 30f).apply {
+                duration = 300
+            }
+            val darkenAnimation = ObjectAnimator.ofFloat(binding.addImageButton, "alpha", 1f, 0.7f).apply {
+                duration = 150
+                repeatMode = ObjectAnimator.REVERSE
+                repeatCount = 1
+            }
+
+            val animatorSet = AnimatorSet()
+            animatorSet.playSequentially(rotateAnimation, darkenAnimation)
+
+            animatorSet.addListener(object : android.animation.Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {}
+
+                override fun onAnimationEnd(animation: Animator) {
+                    // Step 2: 애니메이션이 끝난 후 다이얼로그 표시
+                    val options = arrayOf("갤러리에서 선택", "카메라로 촬영")
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("이미지 추가")
+                        .setItems(options) { _, which ->
+                            when (which) {
+                                0 -> { // 갤러리에서 선택
+                                    (activity as? com.example.myapplication_test1.MainActivity)?.galleryLauncher?.launch("image/*")
+                                }
+                                1 -> { // 카메라로 촬영
+                                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                                    startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
+                                }
+                            }
+                            // Step 3: 버튼 상태 복원
+                            binding.addImageButton.rotation = 0f
+                            binding.addImageButton.alpha = 1f
                         }
-                        1 -> { // 카메라로 촬영
-                            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                            startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
+                        .setOnCancelListener {
+                            // 다이얼로그가 취소되었을 때 버튼 복원
+                            binding.addImageButton.rotation = 0f
+                            binding.addImageButton.alpha = 1f
                         }
-                        else -> {} // 기타 경우
-                    }
+                        .show()
                 }
-                .show()
+
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationRepeat(animation: Animator) {}
+            })
+
+            // 애니메이션 시작
+            animatorSet.start()
         }
 
         return root
@@ -262,9 +296,9 @@ class DashboardFragment : Fragment() {
             return images.size // 데이터 개수만 반환
         }
 
+
+
         private fun showInputDialog(imageKey: String) {
-
-
 
             val dialog = Dialog(requireContext())
             dialog.setContentView(R.layout.dialog_add_memories)
