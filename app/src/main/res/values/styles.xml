@@ -10,9 +10,6 @@
         <item name="android:windowNoTitle">true</item> <!-- 타이틀바 숨김 -->
         <item name="android:windowFullscreen">true</item> <!-- 전체 화면 -->
     </style>
-    <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemRippleColor">@null</item>
-    </style>
 
 
 
