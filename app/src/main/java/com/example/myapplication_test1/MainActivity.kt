@@ -62,6 +62,8 @@ class MainActivity : AppCompatActivity() {
         checkAndRequestStoragePermission()
 
         val navView: BottomNavigationView = binding.navView
+        navView.itemRippleColor = null
+        navView.itemBackground = null
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each

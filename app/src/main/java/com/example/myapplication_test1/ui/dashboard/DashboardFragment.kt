@@ -31,6 +31,11 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import com.example.myapplication_test1.ui.home.HomeFragment
 import com.google.android.material.textfield.TextInputEditText
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.graphics.PorterDuff
+import android.os.Handler
+import android.os.Looper
 
 
 class DashboardFragment : Fragment() {
@@ -258,6 +263,9 @@ class DashboardFragment : Fragment() {
         }
 
         private fun showInputDialog(imageKey: String) {
+
+
+
             val dialog = Dialog(requireContext())
             dialog.setContentView(R.layout.dialog_add_memories)
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
