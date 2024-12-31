@@ -277,6 +277,7 @@ import com.google.android.material.textfield.TextInputEditText
 import java.util.Calendar
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication_test1.api.PokeApiClient
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -337,6 +338,29 @@ class HomeFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private suspend fun getRandomPokemonImageByType(type: String): String? {
+        try {
+            // 1. 해당 타입의 모든 포켓몬 리스트를 가져옵니다
+            val typeResponse = PokeApiClient.service.getPokemonsByType(type)
+
+            // 2. 포켓몬 리스트에서 랜덤으로 하나를 선택합니다
+            val randomPokemon = typeResponse.pokemon.random().pokemon
+
+            // 3. URL에서 포켓몬 ID를 추출합니다
+            // URL 형식: "https://pokeapi.co/api/v2/pokemon/25/"
+            val pokemonId = randomPokemon.url.split("/").dropLast(1).last().toInt()
+
+            // 4. 선택된 포켓몬의 상세 정보를 가져옵니다
+            val pokemonResponse = PokeApiClient.service.getPokemonById(pokemonId)
+
+            // 5. 공식 아트워크 이미지 URL을 반환합니다
+            return pokemonResponse.sprites.other.officialArtwork.frontDefault
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
     }
 
     private fun showAddFriendDialog() {
@@ -467,6 +491,7 @@ class HomeFragment : Fragment() {
             friendsList.addAll(savedFriends)
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

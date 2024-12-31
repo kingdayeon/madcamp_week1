@@ -62,6 +62,10 @@ class MainActivity : AppCompatActivity() {
         checkAndRequestStoragePermission()
 
         val navView: BottomNavigationView = binding.navView
+//
+//        // 리플 효과와 애니메이션 제거
+//        navView.itemRippleColor = ContextCompat.getColorStateList(this, android.R.color.transparent)
+//        navView.stateListAnimator = null
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
