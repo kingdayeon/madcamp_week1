@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Intent
 import android.app.Activity
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -16,6 +17,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication_test1.R
@@ -31,6 +33,9 @@ import java.util.Calendar
 import com.example.myapplication_test1.AppointmentAdapter
 import com.example.myapplication_test1.data.Appointment
 import com.example.myapplication_test1.data.Friend
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+
 
 class AppointmentsFragment : Fragment() {
     private var _binding: FragmentAppointmentsBinding? = null
@@ -38,9 +43,11 @@ class AppointmentsFragment : Fragment() {
 
     // 약속 데이터를 저장하는 리스트 선언
     private val appointmentsList = mutableListOf<Appointment>()
-
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var appointmentAdapter: AppointmentAdapter
 
+    private val PREFS_NAME = "AppointmentsPrefs"
+    private val APPOINTMENTS_KEY = "appointmentsList"
 
     private var selectedLocation: LatLng? = null
     private var selectedLocationName: String? = null
@@ -56,6 +63,9 @@ class AppointmentsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAppointmentsBinding.inflate(inflater, container, false)
+        // SharedPreferences 초기화 및 데이터 로드
+        sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
+        loadAppointments()
 
         binding.pokeballImage.setOnClickListener {
             showAddAppointmentDialog()
@@ -75,6 +85,7 @@ class AppointmentsFragment : Fragment() {
                 appointmentsList.removeAt(position)
                 appointmentAdapter.notifyItemRemoved(position)
                 appointmentAdapter.notifyItemRangeChanged(position, appointmentsList.size)
+                saveAppointments() // 데이터 저장
             }
         )
 
@@ -199,7 +210,7 @@ class AppointmentsFragment : Fragment() {
 
                     // 어댑터에 변경 알림
                     appointmentAdapter.notifyDataSetChanged()
-
+                    saveAppointments() // 데이터 저장
                     // 다이얼로그 닫기
                     currentDialog?.dismiss()
                 }
@@ -207,6 +218,23 @@ class AppointmentsFragment : Fragment() {
         }
 
         currentDialog?.show()
+    }
+
+    private fun saveAppointments() {
+        val editor = sharedPreferences.edit()
+        val json = Gson().toJson(appointmentsList)
+        editor.putString(APPOINTMENTS_KEY, json)
+        editor.apply()
+    }
+
+    private fun loadAppointments() {
+        val json = sharedPreferences.getString(APPOINTMENTS_KEY, null)
+        if (!json.isNullOrEmpty()) {
+            val type = object : TypeToken<MutableList<Appointment>>() {}.type
+            val savedAppointments: MutableList<Appointment> = Gson().fromJson(json, type)
+            appointmentsList.clear()
+            appointmentsList.addAll(savedAppointments)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

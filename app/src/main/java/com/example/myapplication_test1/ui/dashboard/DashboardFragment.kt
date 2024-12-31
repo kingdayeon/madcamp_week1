@@ -23,6 +23,14 @@ import android.os.Environment
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
+import android.graphics.Color
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Button
+import com.example.myapplication_test1.ui.home.HomeFragment
+import com.google.android.material.textfield.TextInputEditText
 
 
 class DashboardFragment : Fragment() {
@@ -99,6 +107,7 @@ class DashboardFragment : Fragment() {
         val root: View = binding.root
         // json 데이터타입
         sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
+
         val json = sharedPreferences.getString(IMAGES_KEY, null)
         Log.d("DEBUG", "Initial SharedPreferences JSON: $json")
         loadImages()
@@ -192,6 +201,9 @@ class DashboardFragment : Fragment() {
     inner class GalleryAdapter(private val images: MutableList<Any>) :
         RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder>() {
 
+        // 각 이미지와 연결된 데이터
+        private val imageDataMap = mutableMapOf<String, ImageData>()
+
         inner class GalleryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val imageView: android.widget.ImageView = itemView.findViewById(R.id.imageView)
         }
@@ -203,6 +215,9 @@ class DashboardFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: GalleryViewHolder, position: Int) {
+            val item = images[position] //이미지 고유 키
+            val imageKey = item.toString()
+
             if (position >= images.size) {
                 // 빈 뷰 처리
                 holder.imageView.setImageDrawable(null) // 빈 뷰에 이미지를 비워둠
@@ -214,7 +229,12 @@ class DashboardFragment : Fragment() {
                     holder.imageView.setImageURI(item) // URI로 이미지 설정
                 }
 
-                // 이미지 삭제 처리
+                // 짧게 누르기: 추억 기록
+                holder.itemView.setOnClickListener {
+                    showInputDialog(imageKey) // 다이얼로그 띄우기
+                }
+
+                // 길게 누르기: 이미지 삭제 처리
                 holder.itemView.setOnLongClickListener {
                     AlertDialog.Builder(requireContext())
                         .setTitle("이미지 삭제")
@@ -230,12 +250,79 @@ class DashboardFragment : Fragment() {
                     true
                 }
             }
+
         }
 
         override fun getItemCount(): Int {
             return images.size // 데이터 개수만 반환
         }
+
+        private fun showInputDialog(imageKey: String) {
+            val dialog = Dialog(requireContext())
+            dialog.setContentView(R.layout.dialog_add_memories)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            val friendInput = dialog.findViewById<AutoCompleteTextView>(R.id.friendInput)
+            val memoInput = dialog.findViewById<TextInputEditText>(R.id.memoInput)
+            val confirmButton = dialog.findViewById<Button>(R.id.confirmButton)
+            val cancelButton = dialog.findViewById<Button>(R.id.cancelButton)
+
+            // 이전 데이터 복원
+            loadImageData()
+            val previousData = imageDataMap[imageKey]
+            friendInput.setText(previousData?.friend ?: "")
+            memoInput.setText(previousData?.memo ?: "")
+
+            //친구 선택 드롭다운
+            val friends = HomeFragment.getFriendsList()
+            val friendAdapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                friends.map { "${it.name} (${it.school})" }
+            )
+            friendInput?.setAdapter(friendAdapter)
+
+            // "확인" 버튼 클릭
+            confirmButton.setOnClickListener {
+                val friend = friendInput.text.toString().ifEmpty { "알 수 없는 친구" } // Default value
+                val memo = memoInput.text.toString()
+
+                imageDataMap[imageKey] = ImageData(friend, memo)
+                saveImageData()
+                dialog.dismiss()
+                Toast.makeText(requireContext(), "데이터가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+
+            // "취소" 버튼 클릭
+            cancelButton.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+
+        private fun notifyItemChangedInRecyclerView(imageKey: String) {
+            val position = images.indexOfFirst { it.toString() == imageKey }
+            if (position != -1) {
+                galleryAdapter.notifyItemChanged(position)
+            }
+        }
+
+        private fun saveImageData() {
+            val editor = sharedPreferences.edit()
+            val json = Gson().toJson(imageDataMap)
+            editor.putString("imageDataMap", json)
+            editor.apply()
+        }
+
+        fun loadImageData() {
+            val json = sharedPreferences.getString("imageDataMap", null)
+            if (!json.isNullOrEmpty()) {
+                val type = object : TypeToken<MutableMap<String, ImageData>>() {}.type
+                val savedData: MutableMap<String, ImageData> = Gson().fromJson(json, type)
+                imageDataMap.putAll(savedData)
+            }
+        }
     }
-
-
+    data class ImageData(val friend: String, val memo: String)
 }

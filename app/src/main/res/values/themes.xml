@@ -36,4 +36,13 @@
         <item name="boxCornerRadiusTopStart">8dp</item>
         <item name="hintTextColor">@color/yellow_50</item>
     </style>
+
+    <style name="CustomMemoryInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/yellow_50</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="hintTextColor">@color/yellow_50</item>
+    </style>
 </resources>

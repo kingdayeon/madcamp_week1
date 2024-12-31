@@ -512,6 +512,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+
     fun getFriendsList(): List<Friend> {
         return friendsList.toList()
     }
