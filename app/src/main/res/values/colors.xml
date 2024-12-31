@@ -7,11 +7,17 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- App specific colors -->
     <color name="nav_background">#F9E799</color>
     <color name="nav_selected">#BD3736</color>
     <color name="nav_unselected">#181209</color>
+
+    <!-- Yellow palette -->
     <color name="yellow_10">#FCF2BD</color>
     <color name="yellow_40">#F9CF79</color>
     <color name="yellow_50">#F4C16C</color>
+
+    <!-- Input colors -->
     <color name="input_stroke_color">#644519</color>
 </resources>

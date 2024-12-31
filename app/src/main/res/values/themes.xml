@@ -1,5 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Theme.MyApplication_Test1" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
@@ -25,6 +24,11 @@
         <item name="itemTextColor">@color/bottom_nav_colors</item>
         <item name="itemRippleColor">@android:color/transparent</item>
         <item name="itemBackground">@null</item>
+        <item name="itemActiveIndicatorStyle">@null</item>
+        <item name="backgroundTint">@null</item>
+        <!-- 추가 -->
+        <item name="android:stateListAnimator">@null</item>
+        <item name="elevation">0dp</item>
     </style>
 
     <!-- Custom TextInputLayout Style -->

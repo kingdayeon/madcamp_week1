@@ -38,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+
+
     companion object {
         private const val REQUEST_CODE_READ_STORAGE = 100 // 권한 요청 코드
     }
@@ -61,6 +63,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         checkAndRequestStoragePermission()
 
+//        val navView: BottomNavigationView = binding.navView
+//        navView.itemRippleColor = null
         val navView: BottomNavigationView = binding.navView
 //
 //        // 리플 효과와 애니메이션 제거
