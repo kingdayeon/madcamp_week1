@@ -289,7 +289,6 @@ class DashboardFragment : Fragment() {
                     true
                 }
             }
-
         }
 
         override fun getItemCount(): Int {

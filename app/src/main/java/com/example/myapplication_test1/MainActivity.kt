@@ -42,11 +42,10 @@ class MainActivity : AppCompatActivity() {
     //gallery launcher
     val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
-            // ViewPager의 현재 페이지가 DashboardFragment일 때만 처리
-            if (binding.viewPager.currentItem == 1) { // 1은 DashboardFragment의 position
-                val currentFragment = supportFragmentManager.fragments[0] as? DashboardFragment
-                currentFragment?.addImage(it)
-            }
+            val currentFragment = supportFragmentManager.fragments.firstOrNull { fragment ->
+                fragment.javaClass == DashboardFragment::class.java
+            } as? DashboardFragment
+            currentFragment?.addImage(it)
         }
     }
 
