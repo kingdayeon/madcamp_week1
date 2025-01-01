@@ -11,6 +11,7 @@
 - 전화 걸기 기능
 
 ### 추억 기록  
+<img src="./images/갤러리1 (3).gif" width="250"/>
 - 카메라/갤러리를 통한 사진 추가
 - 친구 태그와 메모 기능
 - RecyclerView, GridLayout 활용 UI 구현
