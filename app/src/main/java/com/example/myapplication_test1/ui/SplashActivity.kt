@@ -10,7 +10,7 @@ import com.example.myapplication_test1.databinding.ActivitySplashBinding
 import com.example.myapplication_test1.R // R 파일을 명시적으로 import
 
 class SplashActivity : AppCompatActivity() {
-    private val SPLASH_TIME_OUT: Long = 2000 // 3초 타임아웃 설정
+    private val SPLASH_TIME_OUT: Long = 2000 // 2초 타임아웃 설정
 
     private lateinit var binding: ActivitySplashBinding
 

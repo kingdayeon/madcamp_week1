@@ -182,7 +182,7 @@ class AppointmentsFragment : Fragment() {
                 { _, selectedYear, month, day ->
                     // 선택된 날짜를 설정
                     val calendarSelected = Calendar.getInstance().apply {
-                        set(selectedYear, month, day)
+                            set(selectedYear, month, day)
                     }
                     selectedDate = calendarSelected.timeInMillis
 
