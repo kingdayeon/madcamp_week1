@@ -35,9 +35,23 @@ import com.google.android.material.textfield.TextInputEditText
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.graphics.PorterDuff
+import android.graphics.Rect
 import android.os.Handler
 import android.os.Looper
 
+class GridSpacingItemDecoration(
+    private val spanCount: Int,
+    private val spacing: Int
+) : RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        val position = parent.getChildAdapterPosition(view)
+        val column = position % spanCount
+
+        outRect.left = spacing - column * spacing / spanCount
+        outRect.right = (column + 1) * spacing / spanCount
+        outRect.bottom = spacing
+    }
+}
 
 class DashboardFragment : Fragment() {
 
@@ -120,8 +134,11 @@ class DashboardFragment : Fragment() {
 
         // RecyclerView 설정
         galleryAdapter = GalleryAdapter(imageList)
-        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2) // 2열 그리드
-        binding.recyclerView.adapter = galleryAdapter
+        binding.recyclerView.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            addItemDecoration(GridSpacingItemDecoration(2, resources.getDimensionPixelSize(R.dimen.grid_spacing)))
+            adapter = galleryAdapter
+        }
 
         // "이미지 추가" 버튼 클릭 이벤트
         binding.addImageButton.setOnClickListener {
@@ -175,6 +192,8 @@ class DashboardFragment : Fragment() {
             // 애니메이션 시작
             animatorSet.start()
         }
+
+
 
         return root
     }
@@ -367,3 +386,6 @@ class DashboardFragment : Fragment() {
     }
     data class ImageData(val friend: String, val memo: String)
 }
+
+
+
