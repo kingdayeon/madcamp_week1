@@ -30,12 +30,12 @@
         app:layout_constraintBottom_toBottomOf="@id/addImageButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:paddingStart="8dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
         android:scrollbars="vertical"
         android:layout_marginTop="46dp"
         android:layout_marginBottom="8dp"
-        app:spanCount="2" />
+        tools:listitem="@layout/item_card" />
 
     <!-- 이미지 추가 버튼 -->
 
