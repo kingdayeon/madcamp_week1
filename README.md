@@ -15,7 +15,7 @@
 - 전화 걸기 기능
 
 ### 추억 기록  
-
+![갤러리](https://github.com/user-attachments/assets/bd8ca299-fd37-4966-a488-c883cdeda9ff)
 
 - 카메라/갤러리를 통한 사진 추가
 - 친구 태그와 메모 기능
