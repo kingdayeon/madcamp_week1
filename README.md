@@ -22,6 +22,9 @@
 - RecyclerView, GridLayout 활용 UI 구현  
 
 ### 약속 관리
+![약속1](https://github.com/user-attachments/assets/e691eac1-df25-49ba-ac43-08d291ae297b)
+![약속2](https://github.com/user-attachments/assets/0db41fa3-27af-4205-b055-154ac9bc66a6)
+
 - Google Places API 활용 장소 검색
 - 날짜별 약속 목록 관리
 - 지도 연동 위치 확인
